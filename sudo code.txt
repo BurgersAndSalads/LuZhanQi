@@ -1,0 +1,120 @@
+
+LuZhangQi , JunQi
+land wars chess
+army chess
+陆战棋， 军棋
+
+1. Game setup
+    1.1 the board
+    track board state using 2D array
+        a) soldier stations (node)
+            these are stations where the pieces will be landing on, 
+            upon initial setup, and as the game progress,
+            the pieces will be able to land on these stations as they move.
+            
+            a.1) some stations have special placement rules upon game setup
+        
+        b) camp (node)
+            safe space for pieces to land on,
+            pieces cannot be placed here upon initial setup
+            opponent pieces cannot attack this node for any reason
+
+        c) headquarters (node)
+            functionally this is the same as a soldier station,
+            only FLAG piece can be placed here upon setup
+            pieces placed here cannot move
+
+        d) nomans land, immpassible terrain,
+            these are optional to add into the game, 
+            serves no purpse other than visual to divide player sides
+            a large space in between will serve the same purpose
+
+        e) roads (line)
+            pieces can use roads to travel between nodes if they are connected
+            players can only move a single pieces over a single segment of a road per turn
+        
+        f) rail roads (line)
+            pieces can travel between nodes if connected via rail roads
+            players can travel in a straight line passing any number of nodes to the final destination
+            as long as the path is not obstructed by any other pieces
+            (they will attack the node they land on if it is an opponent)
+
+    1.2 the pieces, piece name are not final
+        the pieces are ordered from highest power to lowest from 1 being most powerful
+        amount means how many pices of this given name will the player control in a single game
+
+        name                rank    amount
+        Field Marshall      2       1
+        General             3       1
+        Lieutenant General  4       2
+        Brigadier           5       2
+        Colonel             6       2
+        Major               7       2
+        Captain             8       3
+        Platoon Commander   9       3
+        Engineer            10      3
+        Grenade             0       2
+        Landmine            1       3
+        Flag                11      1
+
+        special notes
+        a) the engineer being the weakest piece, is the only pice that can disable landmines
+        the engineer can attack the landmine and survive
+        the engineer can travel to their destination using rail roads passing any number of nodes
+        as long as they are connected by raild roads, and does not have to be a straight line
+        
+        b) grenades can move like any other piece, and is able to attack anything and destroy it
+        the grenade itself will also be destroyed in the process
+
+        c) landmine functions similarly to grenades, other than 
+        it cannot move after being placed during setup
+        it will only be removed by the opponent engineer and does not kill the engineer
+        it can only be placed on the last 2 rows of the player base
+
+        d) capturing the flag is the goal and winning condition of the players
+        flag can not move, 
+        flag can only be placed inside one of the headquarters
+
+        e) when the Field Marshall is killed, the flag reveals its location
+
+
+
+2. Game flow
+
+    board renders
+    each player will be able to place their pieces from their own pool of pieces following the rules
+    confirm placement, maybe add feature to change placements, swap places etc. maybe add a timer for setup phase
+    game start when each player is ready
+    
+    {
+    2 players, take turns, move pieces one at a time, following the rules
+    one player will direct their own piece to any available node
+        an available node will be a) a node occupied by an opponent piece
+                                  b) an empty node
+    when a piece "collides" (attacking) with an opponent piece (it is illegal to attack yourself!)
+    game will compare the two pieces rank, higher power piece wins and destroyes the weaker piece and occupy the node
+    tie will anilate both pieces
+    }
+
+    above process is the general game loop
+
+    game will end when a winner is determined
+    the winner is determined when a flag is caputured ("destroyed")
+
+3. other features
+
+concede button
+turn timers
+reset board
+turn indicator
+move indicator
+implement sound when moving through nodes
+sound for combat
+other misc sounds
+scored keeping (its a friendly war game between friendly friends , keep your own rivalry between yourselves! )
+
+
+4. AI MAYBE, who knows, maybe too complicated, or the dumbest AI in the world
+
+
+anything with a large grid, think about the inital data structure, how to manage the grid
