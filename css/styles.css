@@ -1,0 +1,18 @@
+#game-board {
+    height: 600px;
+    width: 900px;
+    border: black 1px solid;
+    margin: auto;
+    margin-top: 200px;
+  }
+  
+.node {
+  border: black 1px solid;
+  height: 100px;
+  width: 200px;
+}
+  
+.img {
+  width: 200px;
+  height: 100px;
+}
