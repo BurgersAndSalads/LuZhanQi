@@ -50,19 +50,17 @@ function game(event) {
 
     // placing pieces
     // pieces are held in an array, and placed in the specified order
-    if (event.target.id.innerHTML == "") {
-        if(turn == 1){
-            if (player1Img.length > 0) {
-                placement(player1Img, event, x, y);
-            } else if (player1Img.length == 0) {
-            
-            }
-        } else if(turn == -1){
-            if (player2Img.length > 0) {
-                placement(player2Img, event, x, y);
-            } else if (player2Img.length == 0) {
+    if(turn == 1){
+        if (player1Img.length > 0) {
+            placement(player1Img, event, x, y);
+        } else if (player1Img.length == 0) {
+        
+        }
+    } else if(turn == -1){
+        if (player2Img.length > 0) {
+            placement(player2Img, event, x, y);
+        } else if (player2Img.length == 0) {
 
-            }
         }
     }
 
