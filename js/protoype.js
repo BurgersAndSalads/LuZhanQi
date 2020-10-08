@@ -9,10 +9,11 @@ let board;
 let winner;
 let turn;
 let cachedImg;
+let x;
+let y;
 let imgBest = "img/Best.png";
 let imgWorst = "img/Worst.png";
 let imgFlag = "img/Flag.png";
-let gameBoard = document.getElementById('game-board');
 
 function initialize() {
     turn = 1;
@@ -39,48 +40,35 @@ let flag    = new Piece('Flag',  3, imgFlag);  //Caputure the flag to win
 let player1Img = [best.img, worst.img, worst.img, flag.img];
 let player2Img = [best.img, worst.img, worst.img, flag.img];
 
-// define board nodes
-class Node {
-    
-    // node contains the information of, coordinate, node occupation status
-    constructor(coordinate, occupation) {
-        // default occupation should be none or -1
-        this.coordinate = coordinate;
-        this.occupation = occupation;
-    }
-
-    // nodes should be "aware" of its surroundings,
-    // check if immediate connected nodes are occupied
-    // check if immediate connected nodes connection type
-    // hold node information, update upon move||combat
-}
-
 // game flow
-document.addEventListener('click', game);
+let gameBoardEl = document.getElementById('game-board');
+gameBoardEl.addEventListener('click', game);
 function game(event) {
-    console.log(event.target.id.charAt(0), event.target.id.charAt(1));
+    x = event.target.id.charAt(1);
+    y = event.target.id.charAt(0);
+    console.log(x, y);
+
     // placing pieces
     // pieces are held in an array, and placed in the specified order
-    if (typeof event.target.id === "string") {
-        let targetId = document.getElementById(event.target.id);
-        if(!targetId.hasChildNodes()) {
-            console.log('clicked empty');
-            if(turn == 1){
-                placement(player1Img, event);
-            } else if(turn == -1){
-                placement(player2Img, event);
+    if (event.target.id.innerHTML == "") {
+        if(turn == 1){
+            if (player1Img.length > 0) {
+                placement(player1Img, event, x, y);
+            } else if (player1Img.length == 0) {
+            
             }
-        } else if(targetId.hasChildNodes()) {
-            console.log('clicked occupied')
-            return
-        } else {
-            // do the activation here
-            alert('dont click between the grids!');
+        } else if(turn == -1){
+            if (player2Img.length > 0) {
+                placement(player2Img, event, x, y);
+            } else if (player2Img.length == 0) {
+
+            }
         }
     }
 
     // taking turns
-    
+     
+
     // change player
     turn = turn * -1;
 
@@ -91,20 +79,19 @@ function game(event) {
 // start of the utility functions
 // -----------------------------------------
 // piece placement function
-function placement(holder, event) {
+function placement(holder, event, x, y) {
     let img = document.createElement('img');
     if (holder.length > 0) {
         img.setAttribute('src', holder[0]);
-        img.setAttribute('class', 'img');
+        img.setAttribute('id', toString(x) + toString(y))
         event.target.appendChild(img);
         holder.shift();
-        return
     }
 }
 // -------------------------------------------
-// child elemenet saved to cachedImg and removed
+// child element saved to cachedImg then removed from parent
 function remover(event) {
-    cachedImg = event.target.firstElementChild();
+    cachedImg = event.target.firstElementChild('img');
     event.target.removeChild();
 }
 // -------------------------------------------------------

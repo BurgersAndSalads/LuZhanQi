@@ -1,0 +1,64 @@
+
+// placing pieces
+// 1. total number of pieces , total number of per type
+//    can assign placing pieces in order, from a pre-determined array
+//    take away pieces when piece is placed
+//    notify user what piece is placed next, visual table
+//    this will need adding setup params in initialization
+
+
+// 2. involing DOM events, click to select from a table of items
+//    click on the node will remove item from table, and place to board
+
+// moving pieces
+// click event, remove piece from selected node to the new node
+// add confirmation
+
+// game logic
+// check if move is legal, if the node is occupied by friendly
+// if the node is traversable
+// if node is occupied by opponent, do comparison check, 
+
+// while checking, checks will go through one by one, 
+// art can be updated, so it looks like the pieces is going from node to node, weave in sound and animation
+
+// special rules apply --- special pieces, and check for winner
+// if winner determined, annoucement, terminate game
+// check for restart, re-initialize game
+
+// after all checks pass, update node information
+
+// otherwise, scream at user
+// DOM stuff  
+// event listener to the nodes
+
+// create a click event to activate the piece
+// allow the activated piece to move
+// place the activated piece to the new location
+// deactivate the piece 
+
+// the pieces should have coordinates properties in them
+// maybe x and y are seperate, maybe array[y][x]
+
+// select a piece thats already placed on the board
+// the piece activates
+// the activated piece has a starting coord
+// click on the dest piece (can only move in straigh line for now)
+
+
+// moving
+// currently how click works is: 
+// if clicked node is empty = valid
+// need to add: if clicked node is enenmy = valid
+//              if clicked node is ally = invalid
+// can use the DOM removeAttribute method
+// reverse the placing on board 
+
+
+// define board nodes
+// node contains the information of, coordinate, node occupation status
+// default occupation should be none or -1
+// nodes should be "aware" of its surroundings,
+// check if immediate connected nodes are occupied
+// check if immediate connected nodes connection type
+// hold node information, update upon move||combat
