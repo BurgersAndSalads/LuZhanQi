@@ -7,6 +7,7 @@
   }
   
 .node {
+  padding: 20px purple;
   border: black 1px solid;
   height: 100px;
   width: 200px;
