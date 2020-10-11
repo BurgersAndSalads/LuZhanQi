@@ -1,9 +1,9 @@
 
 let winner = 0;
 let turn = 1;
-let imgBest = "img/Best.png";
-let imgWorst = "img/Worst.png";
-let imgFlag = "img/Flag.png";
+const imgBest = "img/Best.png";
+const imgWorst = "img/Worst.png";
+const imgFlag = "img/Flag.png";
 
 let board = [ 
     -1, -1, -1, -1,
@@ -12,14 +12,21 @@ let board = [
     -1, -1, -1, -1
 ]
 
+const cells = document.querySelectorAll("td")
+
 class Piece {
-    constructor(name, rank, img, faction) {
+    constructor(name, rank, img, faction, up = false, right = false, down = false, left = false) {
         this.name = name;
         this.rank = rank;
         this.img = img;
         this.faction = faction;
+        this.up = up;
+        this.down = down;
+        this.left = left;
+        this.right = right;
     }
 }
+
 let best    = new Piece('Best',  1, imgBest);  //Best piece
 let worst   = new Piece('Worst', 2, imgWorst); //Worst piece
 let flag    = new Piece('Flag',  3, imgFlag);  //Caputure the flag to win
@@ -39,25 +46,47 @@ let player2Pool = [
 let player1 = [];
 let player2 = [];
 
-let boardEl = document.getElementById("game-board");
-boardEl.addEventListener('click', game);
+const boardElement = document.getElementById("game-board");
+boardElement.addEventListener('click', game);
 
 
 function game(event) {
+
+    if(player1Pool.length != 0 || player2Pool.length != 0) {
+        placePiecesOnGameStart(event);
+    }
+
+
+}
+
+
+function checkAvalaibleMoves(event, selected) {
+    let destId = parseInt(event.target.id)
+    if(board[destId - 4] === -1) {
+        selected.up = true;
+    }
+    if(board[destId + 4] === -1) {
+        selected.down = true;
+    }
+    if(board[destId - 1] === -1 &&
+       board[destId - 1].classList.contains("edge") !== true) {
+        selected.left = true;
+    }
+    if(board[destId + 1] === -1 &&
+       board[destId + 1].classList.contains("edge") !== true) {
+        selected.right = true;
+    }
+}
+
+function placePiecesOnGameStart(event) {
     let cellElement = event.target
     if(event.target.style.backgroundImage == "") {
         if(player1Pool.length > 0) {
             placement(player1Pool, cellElement);
-        } else {
+        }else if(player2Pool.length > 0) {
             placement(player2Pool, cellElement);
         }
-    } else if(event.target.style.backgroundImage != "") {
-        if(turn == 1){
-            player1 = event.target.style.backgroundImage;
-            // player1Pool
-            event.target.style.backgroundImage = "";
-        }
-    }   
+    }
 }
 
 
