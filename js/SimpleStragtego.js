@@ -3,22 +3,18 @@ const imgBest = "img/Best.png";
 const imgWorst = "img/Worst.png";
 const imgFlag1 = "img/Flag1.png";
 const imgFlag2 = "img/Flag2.png";
+let player1Pool = [];
+let player2Pool = [];
 let cache;
-const bestUrl = `url("${imgBest}")`
-const worstUrl = `url("${imgWorst}")`
+const bestUrl = `url("${imgBest}")`;
+const worstUrl = `url("${imgWorst}")`;
 const flag1Url = `url("${imgFlag1}")`;
 const flag2Url = `url("${imgFlag2}")`;
 let travel;
-
-// initialize the game, and call init on reset and winner
-function initialize() {
-    turn = 1;
-    cache = [];
-    travel = [];
-}
-initialize();
-
+const banner = document.querySelector(".banner");
+const btn = document.querySelector("button");
 const cells = document.querySelectorAll("td")
+
 class Piece {
     constructor(name, rank, img, faction, up = false, right = false, down = false, left = false) {
         this.name = name;
@@ -36,18 +32,30 @@ let worst   = new Piece('Worst', 2, imgWorst); //Worst piece
 let flag1   = new Piece('Flag1', 3, imgFlag1); //Caputure the flag to win
 let flag2   = new Piece('Flag2', 3, imgFlag2)
 
-let player1Pool = [
-    best,
-    best,
-    best,
-    flag1
-];
-let player2Pool = [
-    worst,
-    worst,
-    worst,
-    flag2
-];
+// initialize the game, and call init on reset and winner
+function initialize() {
+    turn = 1;
+    cache = [];
+    travel = [];
+    banner.style.display = "none";
+    player1Pool = [
+        best,
+        best,
+        best,
+        flag1
+    ];
+    player2Pool = [
+        worst,
+        worst,
+        worst,
+        flag2
+    ];
+    cells.forEach(e => {
+        e.removeAttribute("style");
+    });
+}
+initialize();
+
 
 const boardElement = document.getElementById("game-board");
 boardElement.addEventListener('click', game);
@@ -56,7 +64,6 @@ boardElement.addEventListener('click', game);
 function game(event) {
     let element = event.target;
     let start = parseInt(element.id);
-    debugger
     if(element.id != "game-board") {
         if(player1Pool.length != 0 || player2Pool.length != 0) {                                    
             if(element.style.backgroundImage == "") {
@@ -105,7 +112,8 @@ function game(event) {
                             turn = turn * -1;
                         } else if(element.style.backgroundImage == flag2Url) {
                             element.style.backgroundImage = cache[0]
-                            console.log("blue wins");
+                            document.getElementById("winner").innerText = "blue wins"
+                            displayWinner();
                         }
                     } else if(Math.abs(travel[0] - travel[1]) == 4) {                                                                               // only allow moving vertically one tile at a time
                         if(!element.hasAttribute("style")) {
@@ -115,7 +123,8 @@ function game(event) {
                             turn = turn * -1;
                         } else if(element.style.backgroundImage == flag2Url) {
                             element.style.backgroundImage = cache[0]
-                            console.log("blue wins");
+                            document.getElementById("winner").innerText = "blue wins"
+                            displayWinner();
                         }
                     } else if (element.style.backgroundImage == bestUrl) {
                         let current = document.getElementById(`${travel[0]}`);
@@ -173,7 +182,8 @@ function game(event) {
                             turn = turn * -1;
                         } else if(element.style.backgroundImage == flag1Url) {
                             element.style.backgroundImage = cache[0]
-                            console.log("red wins");
+                            document.getElementById("winner").innerText = "red wins"
+                            displayWinner();
                         }
                     } else if(Math.abs(travel[0] - travel[1]) == 4) {
                         if(!element.hasAttribute("style")) {                           
@@ -183,7 +193,8 @@ function game(event) {
                         turn = turn * -1;
                         } else if(element.style.backgroundImage == flag1Url) {
                             element.style.backgroundImage = cache[0]
-                            console.log("red wins");
+                            document.getElementById("winner").innerText = "red wins"
+                            displayWinner();
                         }
                     } else if (element.style.backgroundImage == worstUrl) {
                         let current = document.getElementById(`${travel[0]}`);
@@ -221,3 +232,9 @@ function placement(pool, element) {
     element.style.backgroundImage = `url("${pool[0].img}")`
     pool.shift();
 }
+
+function displayWinner() {
+    banner.style.display = "block";
+}
+
+btn.addEventListener('click', initialize);
