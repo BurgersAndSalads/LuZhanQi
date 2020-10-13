@@ -60,7 +60,7 @@ const boardElement = document.getElementById("game-board");
 boardElement.addEventListener('click', game);
 
 // give the tiles event listeners
-cells.forEach(element => element.addEventListener("click", selectedPieces))
+// cells.forEach(element => element.addEventListener("click", selectedPieces))
 
 // allow for selecting pieces depending on player turn
 function selectedPieces() {
@@ -74,28 +74,41 @@ function selectedPieces() {
 // game flow , main function
 function game(event) {
     let element = event.target
-    if(player1Pool.length !== 0 || player2Pool.length !== 0) {
-        placePiecesOnGameStart(event);
-    }else if(element.hasAttribute("style")) {
-        if (turn == 1) {
-            console.log("player1")
-            cache[0] = element.style.backgroundImage; 
-            console.log(cache[0])
-            element.removeAttribute("style");
+    if(element.id != "game-board") {
+        if(player1Pool.length !== 0 || player2Pool.length !== 0) {
+            placePiecesOnGameStart(event);
         } else {
-            console.log("player2")
-            cache[0] = element.style.backgroundImage;
-            console.log(cache[0])
-            element.removeAttribute("style");
+            if (turn == 1) {
+                if(element.hasAttribute("style")) {
+                    if (element.style.backgroundImage === 'url("img/Flag.png")') {
+                        return
+                    }else if(cache.length != 1) {
+                        cache[0] = element.style.backgroundImage;
+                        element.removeAttribute("style");
+                    }
+                } else {
+                    if(cache.length > 0) {
+                        element.style.backgroundImage = cache[0]
+                        cache.shift()
+                    }
+                }
+            } else {
+                if(element.hasAttribute("style")){
+                    if (element.style.backgroundImage == 'url("img/Flag.png")') {
+                        return
+                    } else if (cache.length != 1) {
+                        cache[0] = element.style.backgroundImage;
+                        element.removeAttribute("style");                        
+                    }
+                }else if(cache.length > 0) {
+                    element.style.backgroundImage = cache[0]
+                    cache.shift()
+                }
+            }
         }
-    }else if (cache.length > 0) {
-        console.log(cache[0])
-        element.style.backgroundImage = cache[0];
-        cache.shift();
     }
-    turn = turn * -1;
-    console.log(turn)
 }
+
 
 //  movement logic, check for available moves
 function checkAvalaibleMoves(event, selected) {
@@ -118,12 +131,12 @@ function checkAvalaibleMoves(event, selected) {
 
 // placement logic
 function placePiecesOnGameStart(event) {
-    let cellElement = event.target
+    let element = event.target
     if(event.target.style.backgroundImage == "") {
         if(player1Pool.length > 0) {
-            placement(player1Pool, cellElement);
+            placement(player1Pool, element);
         }else if(player2Pool.length > 0) {
-            placement(player2Pool, cellElement);
+            placement(player2Pool, element);
         }
     }
 }
