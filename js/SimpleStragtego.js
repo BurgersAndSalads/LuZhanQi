@@ -96,7 +96,8 @@ function game(event) {
                     }
                 } else {
                     if(!element.hasAttribute("style")) {                                            // if there is a piece selected                        
-                        if(Math.abs(travel[0] - travel[1]) == 1) {                                  // only allow moving one tile at a time horizontally, cant go through the edge
+                        if(Math.abs(travel[0] - travel[1]) == 1 &&
+                        !document.getElementById(`${travel[0]}`).classList.contains(document.getElementById(`${travel[1]}`).classList.item(1))) {      // only allow moving one tile at a time horizontally, cant go through the edge
                             element.style.backgroundImage = cache[0]                                // place the cached piece on the new tile
                             cache.shift()
                             travel = [];
