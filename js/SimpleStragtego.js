@@ -9,6 +9,7 @@ let cache;
 const bestUrl = `url("${imgBest}")`
 const worstUrl = `url("${imgWorst}")`
 const flagUrl = 'url("img/Flag.png")';
+let travel = [];
 
 // initialize the game, and call init on reset and winner
 function initialize() {
@@ -76,29 +77,48 @@ boardElement.addEventListener('click', game);
 // game flow , main function
 function game(event) {
     let element = event.target;
+    let start = parseInt(element.id);
+    debugger
     if(element.id != "game-board") {
-        if(player1Pool.length !== 0 || player2Pool.length !== 0) {
-            placePiecesOnGameStart(event);
-        } else {
-            if (turn == 1) {
-                if(element.hasAttribute("style")) {
-                    if (element.style.backgroundImage == flagUrl) {
+        if(player1Pool.length !== 0 || player2Pool.length !== 0) {                                  // placing pieces upon game start
+            placePiecesOnGameStart(event);                                                          // call placement function
+        } else {                                                                                    // if all players placed their pieces
+            travel.push(start)
+            if (turn == 1) {                                                                        // if it is player 1 turn
+                if(element.hasAttribute("style") && cache.length == 0) {                            // check if there is a piece on the selected tile
+                    if (element.style.backgroundImage == flagUrl) {                                 // cannot move flag
                         return
-                    } else if(element.style.backgroundImage != bestUrl){
+                    } else if(element.style.backgroundImage != bestUrl){                            // cannot move opponent piece
                         return
-                    } else if(cache.length != 1) {
+                    } else if(cache.length != 1) {                                                  // allow for selecting a piece if there is none selected
                         cache[0] = element.style.backgroundImage;
                         element.removeAttribute("style");
-                        turn = turn * -1;
                     }
                 } else {
-                    if(cache.length > 0) {
-                        element.style.backgroundImage = cache[0]
-                        cache.shift()
+                    if(!element.hasAttribute("style")) {                                            // if there is a piece selected                        
+                        if(Math.abs(travel[0] - travel[1]) == 1) {                                  // only allow moving one tile at a time horizontally, cant go through the edge
+                            element.style.backgroundImage = cache[0]                                // place the cached piece on the new tile
+                            cache.shift()
+                            travel = [];
+                        } else if(Math.abs(travel[0] - travel[1]) == 4) {                           // only allow moving vertically one tile at a time
+                            element.style.backgroundImage = cache[0]                                // place the cached piece on the new tile
+                            cache.shift()
+                            travel = [];
+                        } else {
+                            let current = document.getElementById(`${travel[0]}`);
+                            current.style.backgroundImage = bestUrl;
+                            cache.shift()
+                            travel = []
+                        }
+                    } else {
+                        let current = document.getElementById(`${travel[0]}`);
+                            current.style.backgroundImage = bestUrl;
+                            cache.shift()
+                            travel = []
                     }
                 }
-            } else {
-                if(element.hasAttribute("style")){
+            } else {                                                                                // if it is player 2 turn
+                if(element.hasAttribute("style")){                                                  // exact same logic as player 1 turn
                     if (element.style.backgroundImage == flagUrl) {
                         return
                     } else if(element.style.backgroundImage != worstUrl){
@@ -107,10 +127,11 @@ function game(event) {
                         cache[0] = element.style.backgroundImage;
                         element.removeAttribute("style");                        
                     }
-                }else if(cache.length > 0) {
-                    element.style.backgroundImage = cache[0]
-                    cache.shift()
-                    turn = turn * -1;
+                } else {
+                    if(cache.length > 0) {
+                        element.style.backgroundImage = cache[0]
+                        cache.shift()
+                    } 
                 }
             }
         }
@@ -130,7 +151,7 @@ function placePiecesOnGameStart(event) {
     }
 }
 
-// placing player pices upon game start
+// placing player pieces upon game start
 function placement(pool, element) {
     if (pool.length > 0) {
         element.style.backgroundImage = `url("${pool[0].img}")`
