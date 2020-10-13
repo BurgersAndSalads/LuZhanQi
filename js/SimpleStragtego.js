@@ -6,7 +6,9 @@ const imgWorst = "img/Worst.png";
 const imgFlag = "img/Flag.png";
 let board = [];
 let cache;
-
+const bestUrl = `url("${imgBest}")`
+const worstUrl = `url("${imgWorst}")`
+const flagUrl = 'url("img/Flag.png")';
 
 // initialize the game, and call init on reset and winner
 function initialize() {
@@ -42,12 +44,12 @@ let flag    = new Piece('Flag',  3, imgFlag);  //Caputure the flag to win
 
 let player1Pool = [
     best,
-    worst,
-    worst,
+    best,
+    best,
     flag
 ];
 let player2Pool = [
-    best,
+    worst,
     worst,
     worst,
     flag
@@ -63,28 +65,31 @@ boardElement.addEventListener('click', game);
 // cells.forEach(element => element.addEventListener("click", selectedPieces))
 
 // allow for selecting pieces depending on player turn
-function selectedPieces() {
-    if(turn == 1) {
-        selected = player1;
-    } else {
-        selected = player2;
-    }
-}
+// function selectedPieces() {
+//     if(turn == 1) {
+//         selected = player1;
+//     } else {
+//         selected = player2;
+//     }
+// }
 
 // game flow , main function
 function game(event) {
-    let element = event.target
+    let element = event.target;
     if(element.id != "game-board") {
         if(player1Pool.length !== 0 || player2Pool.length !== 0) {
             placePiecesOnGameStart(event);
         } else {
             if (turn == 1) {
                 if(element.hasAttribute("style")) {
-                    if (element.style.backgroundImage === 'url("img/Flag.png")') {
+                    if (element.style.backgroundImage == flagUrl) {
                         return
-                    }else if(cache.length != 1) {
+                    } else if(element.style.backgroundImage != bestUrl){
+                        return
+                    } else if(cache.length != 1) {
                         cache[0] = element.style.backgroundImage;
                         element.removeAttribute("style");
+                        turn = turn * -1;
                     }
                 } else {
                     if(cache.length > 0) {
@@ -94,7 +99,9 @@ function game(event) {
                 }
             } else {
                 if(element.hasAttribute("style")){
-                    if (element.style.backgroundImage == 'url("img/Flag.png")') {
+                    if (element.style.backgroundImage == flagUrl) {
+                        return
+                    } else if(element.style.backgroundImage != worstUrl){
                         return
                     } else if (cache.length != 1) {
                         cache[0] = element.style.backgroundImage;
@@ -103,31 +110,13 @@ function game(event) {
                 }else if(cache.length > 0) {
                     element.style.backgroundImage = cache[0]
                     cache.shift()
+                    turn = turn * -1;
                 }
             }
         }
     }
 }
 
-
-//  movement logic, check for available moves
-function checkAvalaibleMoves(event, selected) {
-    let destId = parseInt(event.target.id)
-    if(board[destId - 4] === -1) {
-        selected.up = true;
-    }
-    if(board[destId + 4] === -1) {
-        selected.down = true;
-    }
-    if(board[destId - 1] === -1 &&
-       board[destId - 1].classList.contains("edge") !== true) {
-        selected.left = true;
-    }
-    if(board[destId + 1] === -1 &&
-       board[destId + 1].classList.contains("edge") !== true) {
-        selected.right = true;
-    }
-}
 
 // placement logic
 function placePiecesOnGameStart(event) {
@@ -150,6 +139,25 @@ function placement(pool, element) {
 }
 
 
+
+// //  movement logic, check for available moves
+// function checkAvalaibleMoves(event, selected) {
+//     let destId = parseInt(event.target.id)
+//     if(board[destId - 4] === -1) {
+//         selected.up = true;
+//     }
+//     if(board[destId + 4] === -1) {
+//         selected.down = true;
+//     }
+//     if(board[destId - 1] === -1 &&
+//        board[destId - 1].classList.contains("edge") !== true) {
+//         selected.left = true;
+//     }
+//     if(board[destId + 1] === -1 &&
+//        board[destId + 1].classList.contains("edge") !== true) {
+//         selected.right = true;
+//     }
+// }
 
 
 
