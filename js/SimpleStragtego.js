@@ -70,10 +70,11 @@ function game(event) {
     if(element.id != "game-board") {
         if(player1Pool.length != 0 || player2Pool.length != 0) {                                    // placing pieces upon game start
             if(element.style.backgroundImage == "") {
-                placement(player1Pool, element);
-            }
-            if(element.style.backgroundImage == "" && player1Pool.length == 0) {
-                placement(player2Pool, element);
+                if(player1Pool.length != 0) {
+                    placement(player1Pool, element);
+                } else {
+                    placement(player2Pool, element)
+                }
             }
             // placePiecesOnGameStart(event);                                                          // call placement function
         } else {                                                                                    // if all players placed their pieces
@@ -149,10 +150,8 @@ function placePiecesOnGameStart(event) {
 
 // placing player pieces upon game start
 function placement(pool, element) {
-    if (pool.length > 0) {
-        element.style.backgroundImage = `url("${pool[0].img}")`
-        pool.shift();
-    }
+    element.style.backgroundImage = `url("${pool[0].img}")`
+    pool.shift();
 }
 
 
