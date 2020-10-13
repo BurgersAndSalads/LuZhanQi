@@ -84,7 +84,7 @@ function game(event) {
                         cache.shift()                                                                                                               // clear cache
                         travel = []                                                                                                                 // clear pathing memory
                         return                                                                                                                      // end the fuction, try again
-                    } else if(element.style.backgroundImage != bestUrl){                                                                            // cant fight your own pieces either, stop it
+                    } else if(element.style.backgroundImage != bestUrl){                                                                            // peace is the only option
                         let current = document.getElementById(`${travel[0]}`);                                                                      // same thing, get grid, cache piece, then put it back
                         current.style.backgroundImage = cache[0];
                         cache.shift()
@@ -99,8 +99,7 @@ function game(event) {
                         cache.shift()
                         travel = []
                     }
-                } else {                                                                                                                            // so if its not the ally pieces, or enemy flag
-                                                                                                                                         
+                } else {                                                                                                                            // so if its not the ally pieces, or enemy flag                                                                                                                         
                     if(Math.abs(travel[0] - travel[1]) == 1 &&                                                                                      // calculating horizontal movement, difference between id is always 1
                     !document.getElementById(`${travel[0]}`).classList.contains(document.getElementById(`${travel[1]}`).classList.item(1))) {       // cant teleport through the edge
                         if(!element.hasAttribute("style")) {                                                                                        // if theres nothing in the landing grid
