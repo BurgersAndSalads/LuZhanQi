@@ -1,10 +1,10 @@
 #game-board {
-    height: 900px;
-    width: 900px;
-    border: black 1px solid;
-    margin: auto;
-    margin-top: 200px;
-  }
+  height: 900px;
+  width: 900px;
+  border: black 1px solid;
+  margin: auto;
+  margin-top: 200px;
+}
   
 .node {
   padding: 20px purple;
@@ -26,12 +26,12 @@ td {
 
 .banner {
   display: none;
-  margin: auto;
+  margin: none;
   position: fixed;
   z-index: 1;
   width: 100%;
   height: 100%;
-  background-color: rgb(0), 0, 0, 0.3);
+  background-color: rgb(0, 0, 0, 0.3);
 }
 
 .banner-content {
@@ -39,4 +39,8 @@ td {
   margin: auto;
   padding: 30px;
   border: black 1px solid;
+}
+
+h1 {
+  text-align: center;
 }
