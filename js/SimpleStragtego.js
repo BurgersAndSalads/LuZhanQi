@@ -3,12 +3,14 @@ let turn;
 let selected;
 const imgBest = "img/Best.png";
 const imgWorst = "img/Worst.png";
-const imgFlag = "img/Flag.png";
+const imgFlag1 = "img/Flag1.png";
+const imgFlag2 = "img/Flag2.png";
 let board = [];
 let cache;
 const bestUrl = `url("${imgBest}")`
 const worstUrl = `url("${imgWorst}")`
-const flagUrl = 'url("img/Flag.png")';
+const flag1Url = 'url("img/Flag1.png")';
+const flag2Url = 'url("img/Flag2.png")';
 let travel = [];
 
 // initialize the game, and call init on reset and winner
@@ -41,38 +43,24 @@ class Piece {
 }
 let best    = new Piece('Best',  1, imgBest);  //Best piece
 let worst   = new Piece('Worst', 2, imgWorst); //Worst piece
-let flag    = new Piece('Flag',  3, imgFlag);  //Caputure the flag to win
+let flag1   = new Piece('Flag1', 3, imgFlag1); //Caputure the flag to win
+let flag2   = new Piece('Flag2', 3, imgFlag2)
 
 let player1Pool = [
     best,
     best,
     best,
-    flag
+    flag1
 ];
 let player2Pool = [
     worst,
     worst,
     worst,
-    flag
+    flag2
 ];
-
-let player1 = player1Pool;
-let player2 = player2Pool;
 
 const boardElement = document.getElementById("game-board");
 boardElement.addEventListener('click', game);
-
-// give the tiles event listeners
-// cells.forEach(element => element.addEventListener("click", selectedPieces))
-
-// allow for selecting pieces depending on player turn
-// function selectedPieces() {
-//     if(turn == 1) {
-//         selected = player1;
-//     } else {
-//         selected = player2;
-//     }
-// }
 
 // game flow , main function
 function game(event) {
@@ -80,13 +68,19 @@ function game(event) {
     let start = parseInt(element.id);
     debugger
     if(element.id != "game-board") {
-        if(player1Pool.length !== 0 || player2Pool.length !== 0) {                                  // placing pieces upon game start
-            placePiecesOnGameStart(event);                                                          // call placement function
+        if(player1Pool.length != 0 || player2Pool.length != 0) {                                    // placing pieces upon game start
+            if(element.style.backgroundImage == "") {
+                placement(player1Pool, element);
+            }
+            if(element.style.backgroundImage == "" && player1Pool.length == 0) {
+                placement(player2Pool, element);
+            }
+            // placePiecesOnGameStart(event);                                                          // call placement function
         } else {                                                                                    // if all players placed their pieces
             travel.push(start)
             if (turn == 1) {                                                                        // if it is player 1 turn
                 if(element.hasAttribute("style") && cache.length == 0) {                            // check if there is a piece on the selected tile
-                    if (element.style.backgroundImage == flagUrl) {                                 // cannot move flag
+                    if (element.style.backgroundImage == flag1Url) {                                 // cannot move flag
                         return
                     } else if(element.style.backgroundImage != bestUrl){                            // cannot move opponent piece
                         return
@@ -97,7 +91,8 @@ function game(event) {
                 } else {
                     if(!element.hasAttribute("style")) {                                            // if there is a piece selected                        
                         if(Math.abs(travel[0] - travel[1]) == 1 &&
-                        !document.getElementById(`${travel[0]}`).classList.contains(document.getElementById(`${travel[1]}`).classList.item(1))) {      // only allow moving one tile at a time horizontally, cant go through the edge
+                        !document.getElementById(`${travel[0]}`).classList.contains(document.getElementById(`${travel[1]}`).classList.item(1))) {      
+                                                                                                    // ^ only allow moving one tile at a time horizontally, cant go through the edge
                             element.style.backgroundImage = cache[0]                                // place the cached piece on the new tile
                             cache.shift()
                             travel = [];
@@ -120,7 +115,7 @@ function game(event) {
                 }
             } else {                                                                                // if it is player 2 turn
                 if(element.hasAttribute("style")){                                                  // exact same logic as player 1 turn
-                    if (element.style.backgroundImage == flagUrl) {
+                    if (element.style.backgroundImage == flag2Url) {
                         return
                     } else if(element.style.backgroundImage != worstUrl){
                         return
