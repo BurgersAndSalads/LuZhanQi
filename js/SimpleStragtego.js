@@ -1,30 +1,20 @@
-let winner;
 let turn;
-let selected;
 const imgBest = "img/Best.png";
 const imgWorst = "img/Worst.png";
 const imgFlag1 = "img/Flag1.png";
 const imgFlag2 = "img/Flag2.png";
-let board = [];
 let cache;
 const bestUrl = `url("${imgBest}")`
 const worstUrl = `url("${imgWorst}")`
-const flag1Url = 'url("img/Flag1.png")';
-const flag2Url = 'url("img/Flag2.png")';
-let travel = [];
+const flag1Url = `url("${imgFlag1}")`;
+const flag2Url = `url("${imgFlag2}")`;
+let travel;
 
 // initialize the game, and call init on reset and winner
 function initialize() {
-    winner = 0;
     turn = 1;
-    selected = null;
-    board = [ 
-        -1, -1, -1, -1,
-        -1, -1, -1, -1,
-        -1, -1, -1, -1,
-        -1, -1, -1, -1
-    ]    
     cache = [];
+    travel = [];
 }
 initialize();
 
@@ -68,7 +58,7 @@ function game(event) {
     let start = parseInt(element.id);
     debugger
     if(element.id != "game-board") {
-        if(player1Pool.length != 0 || player2Pool.length != 0) {                                    // placing pieces upon game start
+        if(player1Pool.length != 0 || player2Pool.length != 0) {                                    
             if(element.style.backgroundImage == "") {
                 if(player1Pool.length != 0) {
                     placement(player1Pool, element);
@@ -76,26 +66,26 @@ function game(event) {
                     placement(player2Pool, element)
                 }
             }
-            // placePiecesOnGameStart(event);                                                          // call placement function
+                                                                  
         } else {
-            if (travel[0] != start) {                                                                                    // if all players placed their pieces
+            if (travel[0] != start) {                                                                                    
                 travel.push(start)
             }
-            if (turn == 1) {                                                                        // if it is player 1 turn
-                if(element.hasAttribute("style")) {                            // check if there is a piece on the selected tile
+            if (turn == 1) {                                                                        
+                if(element.hasAttribute("style") && element.style.backgroundImage != flag2Url) {                            
                     if (element.style.backgroundImage == flag1Url) {
                         let current = document.getElementById(`${travel[0]}`);
                         current.style.backgroundImage = cache[0];
                         cache.shift()
-                        travel = []                                 // cannot move flag
+                        travel = []                                 
                         return
-                    } else if(element.style.backgroundImage != bestUrl){                            // cannot move opponent piece
+                    } else if(element.style.backgroundImage != bestUrl){                            
                         let current = document.getElementById(`${travel[0]}`);
                         current.style.backgroundImage = cache[0];
                         cache.shift()
                         travel = []
                         return
-                    } else if(cache.length == 0) {                                                  // allow for selecting a piece if there is none selected
+                    } else if(cache.length == 0) {                                                                                                  // allow for selecting a piece if there is none selected
                         cache[0] = element.style.backgroundImage;
                         element.removeAttribute("style");
                     } else {
@@ -105,53 +95,117 @@ function game(event) {
                         travel = []
                     }
                 } else {
-                    if(!element.hasAttribute("style")) {                                            // if there is a piece selected                        
-                        if(Math.abs(travel[0] - travel[1]) == 1 &&
-                        !document.getElementById(`${travel[0]}`).classList.contains(document.getElementById(`${travel[1]}`).classList.item(1))) {      // only allow moving one tile at a time horizontally, cant go through the edge
-                            element.style.backgroundImage = cache[0]                                // place the cached piece on the new tile
+                                                                                                                                         
+                    if(Math.abs(travel[0] - travel[1]) == 1 &&
+                    !document.getElementById(`${travel[0]}`).classList.contains(document.getElementById(`${travel[1]}`).classList.item(1))) {       // only allow moving one tile at a time horizontally, cant go through the edge
+                        if(!element.hasAttribute("style")) {
+                            element.style.backgroundImage = cache[0]                                                                                // place the cached piece on the new tile
                             cache.shift()
                             travel = [];
-                        } else if(Math.abs(travel[0] - travel[1]) == 4) {                           // only allow moving vertically one tile at a time
-                            element.style.backgroundImage = cache[0]                                // place the cached piece on the new tile
-                            cache.shift()
-                            travel = [];
-                        } else if (element.style.backgroundImage == bestUrl) {
-                            let current = document.getElementById(`${travel[0]}`);
-                            current.style.backgroundImage = cache[0];
-                            cache.shift()
-                            travel = []
-                        } else if(element.style.backgroundImage == flag1Url) {
-                            let current = document.getElementById(`${travel[0]}`);
-                            current.style.backgroundImage = cache[0];
-                            cache.shift()
-                            travel = []
-                        } else {
-                            let current = document.getElementById(`${travel[0]}`);
-                            current.style.backgroundImage = cache[0];
-                            cache.shift()
-                            travel = []
+                            turn = turn * -1;
+                        } else if(element.style.backgroundImage == flag2Url) {
+                            element.style.backgroundImage = cache[0]
+                            console.log("blue wins");
                         }
-                    } else if(travel.length == 1) {
+                    } else if(Math.abs(travel[0] - travel[1]) == 4) {                                                                               // only allow moving vertically one tile at a time
+                        if(!element.hasAttribute("style")) {
+                            element.style.backgroundImage = cache[0]                                                                                // place the cached piece on the new tile
+                            cache.shift()
+                            travel = [];
+                            turn = turn * -1;
+                        } else if(element.style.backgroundImage == flag2Url) {
+                            element.style.backgroundImage = cache[0]
+                            console.log("blue wins");
+                        }
+                    } else if (element.style.backgroundImage == bestUrl) {
+                        let current = document.getElementById(`${travel[0]}`);
+                        current.style.backgroundImage = cache[0];
+                        cache.shift()
+                        travel = []
+                    } else if(element.style.backgroundImage == flag1Url) {
+                        let current = document.getElementById(`${travel[0]}`);
+                        current.style.backgroundImage = cache[0];
+                        cache.shift()
+                        travel = []
+                    } else {
+                        let current = document.getElementById(`${travel[0]}`);
+                        current.style.backgroundImage = cache[0];
+                        cache.shift()
+                        travel = []
+                    }
+                    if(travel.length == 1) {
                         let current = document.getElementById(`${travel[0]}`);
                         current.style.backgroundImage = cache[0];
                         cache.shift()
                         travel = []
                     }
                 }
-            } else {                                                                                // if it is player 2 turn
-                if(element.hasAttribute("style")){                                                  // exact same logic as player 1 turn
+            } else {                                                                                
+                if(element.hasAttribute("style") && element.style.backgroundImage != flag1Url) {                                                  
                     if (element.style.backgroundImage == flag2Url) {
+                        let current = document.getElementById(`${travel[0]}`);
+                        current.style.backgroundImage = cache[0];
+                        cache.shift()
+                        travel = []
                         return
                     } else if(element.style.backgroundImage != worstUrl){
+                        let current = document.getElementById(`${travel[0]}`);
+                        current.style.backgroundImage = cache[0];
+                        cache.shift()
+                        travel = []
                         return
-                    } else if (cache.length != 1) {
+                    } else if (cache.length == 0) {
                         cache[0] = element.style.backgroundImage;
                         element.removeAttribute("style");                        
-                    }
-                } else {
-                    if(cache.length > 0) {
-                        element.style.backgroundImage = cache[0]
+                    } else {
+                        let current = document.getElementById(`${travel[0]}`);
+                        current.style.backgroundImage = cache[0];
                         cache.shift()
+                        travel = []
+                    }
+                } else {                      
+                    if(Math.abs(travel[0] - travel[1]) == 1 &&
+                    !document.getElementById(`${travel[0]}`).classList.contains(document.getElementById(`${travel[1]}`).classList.item(1))) {
+                        if(!element.hasAttribute("style")) {
+                            element.style.backgroundImage = cache[0]                                
+                            cache.shift()
+                            travel = [];
+                            turn = turn * -1;
+                        } else if(element.style.backgroundImage == flag1Url) {
+                            element.style.backgroundImage = cache[0]
+                            console.log("red wins");
+                        }
+                    } else if(Math.abs(travel[0] - travel[1]) == 4) {
+                        if(!element.hasAttribute("style")) {                           
+                        element.style.backgroundImage = cache[0]                                
+                        cache.shift()
+                        travel = [];
+                        turn = turn * -1;
+                        } else if(element.style.backgroundImage == flag1Url) {
+                            element.style.backgroundImage = cache[0]
+                            console.log("red wins");
+                        }
+                    } else if (element.style.backgroundImage == worstUrl) {
+                        let current = document.getElementById(`${travel[0]}`);
+                        current.style.backgroundImage = cache[0];
+                        cache.shift()
+                        travel = []
+                    } else if(element.style.backgroundImage == flag2Url) {
+                        let current = document.getElementById(`${travel[0]}`);
+                        current.style.backgroundImage = cache[0];
+                        cache.shift()
+                        travel = []
+                    } else {
+                        let current = document.getElementById(`${travel[0]}`);
+                        current.style.backgroundImage = cache[0];
+                        cache.shift()
+                        travel = []
+                    }
+                    if(travel.length == 1) {
+                        let current = document.getElementById(`${travel[0]}`);
+                        current.style.backgroundImage = cache[0];
+                        cache.shift()
+                        travel = []
                     } 
                 }
             }
@@ -160,75 +214,10 @@ function game(event) {
 }
 
 
-// placement logic
-function placePiecesOnGameStart(event) {
-    let element = event.target
-    if(event.target.style.backgroundImage == "") {
-        if(player1Pool.length > 0) {
-            placement(player1Pool, element);
-        }else if(player2Pool.length > 0) {
-            placement(player2Pool, element);
-        }
-    }
-}
+
 
 // placing player pieces upon game start
 function placement(pool, element) {
     element.style.backgroundImage = `url("${pool[0].img}")`
     pool.shift();
 }
-
-
-
-// //  movement logic, check for available moves
-// function checkAvalaibleMoves(event, selected) {
-//     let destId = parseInt(event.target.id)
-//     if(board[destId - 4] === -1) {
-//         selected.up = true;
-//     }
-//     if(board[destId + 4] === -1) {
-//         selected.down = true;
-//     }
-//     if(board[destId - 1] === -1 &&
-//        board[destId - 1].classList.contains("edge") !== true) {
-//         selected.left = true;
-//     }
-//     if(board[destId + 1] === -1 &&
-//        board[destId + 1].classList.contains("edge") !== true) {
-//         selected.right = true;
-//     }
-// }
-
-
-
-
-
-
-/*
-    New approach
-    Set up the board as a single array
-    Assign the pictures to their own rank
-    Each player has starting pieces to place onto the board
-
-    Update the board with the rank number when it is clicked on
-
-    Show pictures to the corresponding number
-    When the tile space is clicked, update the board data to (place holder 0) nothing
-    When a tile with nothing in it is clicked, update the board state
-    And the picture that was gone should show up again
-    If the clicked tile is not empty
-    First, check the tile is occupied by ally
-        Then, nothing happens, the piece remains where it was
-        And the user will have to go through the process again of moving
-    Second, check the tile is occupied by enemy
-        Compare the rank of the two 
-        The bigger one will win and be the only picture on the tile
-
-
-
-    Event is a snapshot
-
-
-    Click on the cell element and remove the background image
-    Click on the empty cell and place the image
-*/

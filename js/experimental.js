@@ -112,3 +112,72 @@ function placement(holder, event) {
 
 // -------------------------------------------
 
+
+
+// if it is player 1 turn
+if(element.hasAttribute("style")) {                            // check if there is a piece on the selected tile
+    if (element.style.backgroundImage == flag1Url) {
+        let current = document.getElementById(`${travel[0]}`);
+        current.style.backgroundImage = cache[0];
+        cache.shift()
+        travel = []                                 // cannot move flag
+        return
+    } else if(element.style.backgroundImage != bestUrl){                            // cannot move opponent piece
+        let current = document.getElementById(`${travel[0]}`);
+        current.style.backgroundImage = cache[0];
+        cache.shift()
+        travel = []
+        return
+    } else if(cache.length == 0) {                                                  // allow for selecting a piece if there is none selected
+        cache[0] = element.style.backgroundImage;
+        element.removeAttribute("style");
+    } else {
+        let current = document.getElementById(`${travel[0]}`);
+        current.style.backgroundImage = cache[0];
+        cache.shift()
+        travel = []
+    }
+} else {
+    if(!element.hasAttribute("style")) {                                            // if there is a piece selected                        
+        if(Math.abs(travel[0] - travel[1]) == 1 &&
+        !document.getElementById(`${travel[0]}`).classList.contains(document.getElementById(`${travel[1]}`).classList.item(1))) {      // only allow moving one tile at a time horizontally, cant go through the edge
+            element.style.backgroundImage = cache[0]                                // place the cached piece on the new tile
+            cache.shift()
+            travel = [];
+        } else if(Math.abs(travel[0] - travel[1]) == 4) {                           // only allow moving vertically one tile at a time
+            element.style.backgroundImage = cache[0]                                // place the cached piece on the new tile
+            cache.shift()
+            travel = [];
+        } else if (element.style.backgroundImage == bestUrl) {
+            let current = document.getElementById(`${travel[0]}`);
+            current.style.backgroundImage = cache[0];
+            cache.shift()
+            travel = []
+        } else if(element.style.backgroundImage == flag1Url) {
+            let current = document.getElementById(`${travel[0]}`);
+            current.style.backgroundImage = cache[0];
+            cache.shift()
+            travel = []
+        } else {
+            let current = document.getElementById(`${travel[0]}`);
+            current.style.backgroundImage = cache[0];
+            cache.shift()
+            travel = []
+        }
+    } else if(travel.length == 1) {
+        let current = document.getElementById(`${travel[0]}`);
+        current.style.backgroundImage = cache[0];
+        cache.shift()
+        travel = []
+    }
+}
+
+
+
+
+function notMoving(travel, cache) {
+    let current = document.getElementById(`${travel[0]}`);
+    current.style.backgroundImage = cache[0];
+    cache.shift()
+    travel = []
+}
