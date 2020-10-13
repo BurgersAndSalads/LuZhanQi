@@ -91,6 +91,7 @@ function game(event) {
     }else if (cache.length > 0) {
         console.log(cache[0])
         element.style.backgroundImage = cache[0];
+        cache.shift();
     }
     turn = turn * -1;
     console.log(turn)
