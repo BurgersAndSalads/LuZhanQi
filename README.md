@@ -53,7 +53,7 @@ the only thing you can run into is the opponent flag </p>
 </ul>
 
 ----------
-<a href=""> here is the link </a>
+<a href="https://burgersandsalads.github.io/LuZhanQi/"> here is the link </a>
 ----------
 <h2> Planned Features </h2>
 <p> just a few among many
