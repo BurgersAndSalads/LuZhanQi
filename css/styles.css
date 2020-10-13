@@ -1,9 +1,14 @@
+div {
+  display: inline;
+  text-align: center;
+}
+
 #game-board {
   height: 900px;
   width: 900px;
   border: black 1px solid;
   margin: auto;
-  margin-top: 200px;
+  margin-top: auto;
 }
   
 .node {
@@ -43,4 +48,22 @@ td {
 
 h1 {
   text-align: center;
+}
+
+#blue {
+  color: blue;
+}
+
+#red {
+  color: red;
+}
+
+p {
+  display: inline;
+  text-align: center;
+}
+
+#showing {
+  text-align: center;
+  margin: auto;
 }
