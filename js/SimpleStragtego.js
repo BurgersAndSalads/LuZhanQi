@@ -1,15 +1,15 @@
 
 // initialize necessary variables
 let turn;                                           // cache turn counter
-const imgBest = "img/Best.png";       
-const imgWorst = "img/Worst.png";
+const imgBlue = "img/Blue.png";       
+const imgRed = "img/Red.png";
 const imgFlag1 = "img/Flag1.png";
 const imgFlag2 = "img/Flag2.png";
 let player1Pool = [];                               // player1 Piece pool
 let player2Pool = [];                               // player2 Piece pool
 let cache;                                          // used for caching selected piece
-const bestUrl = `url("${imgBest}")`;
-const worstUrl = `url("${imgWorst}")`;
+const blueUrl = `url("${imgBlue}")`;
+const redUrl = `url("${imgRed}")`;
 const flag1Url = `url("${imgFlag1}")`;
 const flag2Url = `url("${imgFlag2}")`;
 let travel;                                         // array for calculating pathing logic
@@ -25,8 +25,8 @@ class Piece {                                       // pretty useless for now
     }
 }
 
-let best    = new Piece('Best',  1, imgBest);  //player1 piece
-let worst   = new Piece('Worst', 2, imgWorst); //player2 piece
+let blue    = new Piece('Blue',  1, imgBlue);  //player1 piece
+let red   = new Piece('Red', 2, imgRed); //player2 piece
 let flag1   = new Piece('Flag1', 3, imgFlag1); //Caputure the flag to win
 let flag2   = new Piece('Flag2', 3, imgFlag2); 
 
@@ -37,15 +37,15 @@ function initialize() {
     travel = [];
     banner.style.display = "none";
     player1Pool = [
-        best,
-        best,
-        best,
+        blue,
+        blue,
+        blue,
         flag1
     ];
     player2Pool = [
-        worst,
-        worst,
-        worst,
+        red,
+        red,
+        red,
         flag2
     ];
     cells.forEach(e => {
@@ -84,7 +84,7 @@ function game(event) {
                         cache.shift()                                                                                                               // clear cache
                         travel = []                                                                                                                 // clear pathing memory
                         return                                                                                                                      // end the fuction, try again
-                    } else if(element.style.backgroundImage != bestUrl){                                                                            // peace is the only option
+                    } else if(element.style.backgroundImage != blueUrl){                                                                            // peace is the only option
                         let current = document.getElementById(`${travel[0]}`);                                                                      // same thing, get grid, cache piece, then put it back
                         current.style.backgroundImage = cache[0];
                         cache.shift()
@@ -123,7 +123,7 @@ function game(event) {
                             document.getElementById("winner").innerText = "blue wins"
                             displayWinner();
                         }
-                    } else if (element.style.backgroundImage == bestUrl) {                                                                           // the next four if statements are weird, and repetitive
+                    } else if (element.style.backgroundImage == blueUrl) {                                                                           // the next four if statements are weird, and repetitive
                         let current = document.getElementById(`${travel[0]}`);                                                                       // theoretically they dont need to be there
                         current.style.backgroundImage = cache[0];                                                                                    // but im too scared to chage anything at this point
                         cache.shift()
@@ -154,7 +154,7 @@ function game(event) {
                         cache.shift()
                         travel = []
                         return
-                    } else if(element.style.backgroundImage != worstUrl){
+                    } else if(element.style.backgroundImage != redUrl){
                         let current = document.getElementById(`${travel[0]}`);
                         current.style.backgroundImage = cache[0];
                         cache.shift()
@@ -193,7 +193,7 @@ function game(event) {
                             document.getElementById("winner").innerText = "red wins"
                             displayWinner();
                         }
-                    } else if (element.style.backgroundImage == worstUrl) {
+                    } else if (element.style.backgroundImage == redUrl) {
                         let current = document.getElementById(`${travel[0]}`);
                         current.style.backgroundImage = cache[0];
                         cache.shift()
