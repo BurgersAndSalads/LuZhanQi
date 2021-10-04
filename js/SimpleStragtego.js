@@ -112,7 +112,7 @@ function game(event) {
                             document.getElementById("winner").innerText = "blue wins"                                                               // somebody is a winner
                             displayWinner();                                                                                                        // yey
                         }
-                    } else if(Math.abs(travel[0] - travel[1]) == 4) {                                                                               // only allow moving vertically one tile at a time
+                    } else if(Math.abs(travel[0] - travel[1]) == 5) {                                                                               // only allow moving vertically one tile at a time
                         if(!element.hasAttribute("style")) {                                                                                        // performing the same check as above, see if theres no one home
                             element.style.backgroundImage = cache[0]                                                                                // place the cached piece on the new tile, clear memory, pass turn
                             cache.shift()
@@ -182,7 +182,7 @@ function game(event) {
                             document.getElementById("winner").innerText = "red wins"
                             displayWinner();
                         }
-                    } else if(Math.abs(travel[0] - travel[1]) == 4) {
+                    } else if(Math.abs(travel[0] - travel[1]) == 5) {
                         if(!element.hasAttribute("style")) {                           
                         element.style.backgroundImage = cache[0]                                
                         cache.shift()
