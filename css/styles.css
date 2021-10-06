@@ -5,7 +5,7 @@ div {
 
 #game-board {
   height: 900px;
-  width: 900px;
+  width: 1000px;
   border: black 1px solid;
   margin: auto;
   margin-top: auto;
@@ -19,14 +19,13 @@ div {
 }
   
 img {
-  width: 50px;
-  height: 100px;
   border: black 1px solid;
 }
 
 td {
   background-color: lightgray;
   border-radius: 100px;
+  align-content: center;
 }
 
 .banner {

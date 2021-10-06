@@ -26,7 +26,7 @@ class Piece {                                       // pretty useless for now
 }
 
 let blue    = new Piece('Blue',  1, imgBlue);  //player1 piece
-let red   = new Piece('Red', 2, imgRed); //player2 piece
+let red     = new Piece('Red',   2, imgRed);   //player2 piece
 let flag1   = new Piece('Flag1', 3, imgFlag1); //Caputure the flag to win
 let flag2   = new Piece('Flag2', 3, imgFlag2); 
 
@@ -64,7 +64,7 @@ function game(event) {
     let start = parseInt(element.id);                                                                                                               // store the selected grid into memory
     if(element.id != "game-board") {                                                                                                                // this is here to prevent clicking on outside the grid
         if(player1Pool.length != 0 || player2Pool.length != 0) {                                                                                    // if both playerPool is empty, placement phase is over                                    
-            if(element.style.backgroundImage == "") {                                                                                               // can only put pieces in empty grids
+            if(element.style.backgroundImage == "" && element.classList.contains("node")) {                                                                                               // can only put pieces in empty grids
                 if(player1Pool.length != 0) {                                                                                                       // player1 place their 4 pieces first
                     placement(player1Pool, element);
                 } else {                                                                                                                            // player2 wait for their turn when p1 finishes
